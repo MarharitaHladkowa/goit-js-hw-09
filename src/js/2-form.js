@@ -3,7 +3,7 @@ let formData = {
   message: '',
 };
 const key = 'feedback-form-state';
-const form = document.querySelector('.login-form');
+const form = document.querySelector('.feedback-form');
 
 // ===== Отслеживаем изменения в полях формы =====
 form.addEventListener('input', evt => {
@@ -14,12 +14,14 @@ form.addEventListener('input', evt => {
   saveToLS(key, formData); // Сохраняем данные в локальное хранилище
 });
 document.addEventListener('DOMContentLoaded', () => {
-  const lsData = getFromLS('formData');
   try {
-    formData = lsData;
-    form.elements.email.value = lsData.email;
-    form.elements.message.value = lsData.message;
-  } catch {
+    const lsData = getFromLS(key);
+    if (lsData) {
+      formData = lsData;
+      form.elements.email.value = lsData.email || '';
+      form.elements.message.value = lsData.message || '';
+    }
+  } catch (error) {
     console.log('Fill please all fields');
   }
 });
@@ -40,3 +42,21 @@ function getFromLS(key, defaultValue) {
     return defaultValue || jsonData; // Возвращаем значение по умолчанию или «как есть»
   }
 }
+form.addEventListener('submit', evt => {
+  evt.preventDefault();
+
+  const email = form.elements.email.value.trim();
+  const message = form.elements.message.value.trim();
+
+  if (!email || !message) {
+    alert('Fill please all fields');
+    return;
+  }
+
+  formData = { email, message };
+  console.log(formData);
+
+  localStorage.removeItem(key);
+  form.reset();
+  formData = { email: '', message: '' };
+});

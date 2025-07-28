@@ -10,18 +10,12 @@
 @import url('./container.css');
 @import url('./animations.css');
 
-/* Sections style */
-@import url('./header.css');
-@import url('./vite-promo.css');
-@import url('./badges.css');
-@import url('./back-link.css');
-@import url('./footer.css');
 body {
   display: block;
   margin-top: 24px;
   margin-right: 156px;
   margin-bottom: 24px;
-  margin-left: 156px;
+  margin-left: 56px;
 }
 
 ul.gallery {
@@ -30,6 +24,7 @@ ul.gallery {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
+  margin: 0 auto;
 }
 
 ul.gallery li {
@@ -67,13 +62,13 @@ ul.gallery li a:focus img {
   width: 100%;
 }
 
-.login-form {
+.feedback-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.login-form label {
+.feedback-form label {
   display: flex;
   flex-direction: column;
   font-weight: 500;
@@ -81,8 +76,8 @@ ul.gallery li a:focus img {
   font-size: 14px;
 }
 
-.login-form input,
-.login-form textarea {
+.feedback-form input,
+.feedback-form textarea {
   margin-top: 6px;
   padding: 10px;
   border: 1px solid #ccc;
@@ -91,7 +86,7 @@ ul.gallery li a:focus img {
   resize: vertical;
 }
 
-.login-form button {
+.feedback-form button {
   margin-top: 10px;
   background-color: #4d7cfe;
   color: white;
@@ -103,7 +98,7 @@ ul.gallery li a:focus img {
   transition: background-color 0.3s ease;
 }
 
-.login-form button:hover {
+.feedback-form button:hover {
   background-color: #3c6cf0;
 }
 button {
@@ -117,4 +112,11 @@ button {
   line-height: 150%;
   letter-spacing: 0.04em;
   color: #fff;
+}
+.form-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* 100% высоты экрана */
+  margin: 0;
 }

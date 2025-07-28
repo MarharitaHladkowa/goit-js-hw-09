@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --base=/goit-js-hw-09/",
+     "push": "git add . && git commit -m \"auto commit\" && git push",
     "preview": "vite preview"
   },
   "devDependencies": {
