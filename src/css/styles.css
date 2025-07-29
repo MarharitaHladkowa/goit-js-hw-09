@@ -32,7 +32,7 @@ ul.gallery li {
   box-sizing: border-box;
 }
 
-ul.gallery li a {
+ul.gallery a {
   display: block;
 }
 

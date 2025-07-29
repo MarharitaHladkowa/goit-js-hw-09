@@ -1,3 +1,5 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 const images = [
   {
     preview:
@@ -68,7 +70,7 @@ const galleryContainer = document.querySelector('.gallery');
 const galleryMarkup = images
   .map(
     image => `
-    <li class="gallery">
+    <li class="gallery-item">
       <a class="gallery-link" href="${image.original}">
         <img
           class="gallery-image"
@@ -82,8 +84,7 @@ const galleryMarkup = images
   .join('');
 
 galleryContainer.innerHTML = galleryMarkup;
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+
 const lightbox = new SimpleLightbox('.gallery a', {
   captions: true, // Увімкнути підписи
   captionSelector: 'img', // Брати підпис із <img>

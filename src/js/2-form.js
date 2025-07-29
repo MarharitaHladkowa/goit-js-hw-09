@@ -5,14 +5,8 @@ let formData = {
 const key = 'feedback-form-state';
 const form = document.querySelector('.feedback-form');
 
-// ===== Отслеживаем изменения в полях формы =====
-form.addEventListener('input', evt => {
-  const email = evt.currentTarget.elements.email.value;
-  const message = evt.currentTarget.elements.message.value;
-  formData.email = email;
-  formData.message = message;
-  saveToLS(key, formData); // Сохраняем данные в локальное хранилище
-});
+// При загрузке страницы проверяем, есть ли данные в локальном хранилище
+
 document.addEventListener('DOMContentLoaded', () => {
   try {
     const lsData = getFromLS(key);
@@ -31,6 +25,13 @@ function saveToLS(key, value) {
   const jsonData = JSON.stringify(value); // Преобразуем значение в JSON-строку
   localStorage.setItem(key, jsonData); // Сохраняем по ключу в localStorage
 }
+form.addEventListener('input', evt => {
+  const email = evt.currentTarget.elements.email.value;
+  const message = evt.currentTarget.elements.message.value;
+  formData.email = email;
+  formData.message = message;
+  saveToLS(key, formData); // Сохраняем данные в локальное хранилище
+});
 function getFromLS(key, defaultValue) {
   const jsonData = localStorage.getItem(key); // Получаем строку из localStorage
 
@@ -58,5 +59,6 @@ form.addEventListener('submit', evt => {
 
   localStorage.removeItem(key);
   form.reset();
-  formData = { email: '', message: '' };
+  formData.email = '';
+  formData.message = '';
 });
