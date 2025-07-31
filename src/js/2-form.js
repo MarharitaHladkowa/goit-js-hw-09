@@ -1,12 +1,10 @@
+let formData = {
+  email: '',
+  message: '',
+};
 document.addEventListener('DOMContentLoaded', () => {
   const key = 'feedback-form-state';
   const form = document.querySelector('.feedback-form');
-
-  // Оголошення formData локально, щоб уникнути глобальних змінних
-  const formData = {
-    email: '',
-    message: '',
-  };
 
   // ===== Отримання даних з localStorage і заповнення форми =====
   const lsData = getFromLS(key);
