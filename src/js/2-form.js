@@ -1,62 +1,75 @@
-formData.email = email;
-formData.message = message;
-const key = 'feedback-form-state';
-const form = document.querySelector('.feedback-form');
-
-// При загрузке страницы проверяем, есть ли данные в локальном хранилище
-
 document.addEventListener('DOMContentLoaded', () => {
-  try {
-    const lsData = getFromLS(key);
-    if (lsData) {
-      formData = lsData;
-      form.elements.email.value = lsData.email || '';
-      form.elements.message.value = lsData.message || '';
+  const key = 'feedback-form-state';
+  const form = document.querySelector('.feedback-form');
+
+  // Оголошення formData локально, щоб уникнути глобальних змінних
+  const formData = {
+    email: '',
+    message: '',
+  };
+
+  // ===== Отримання даних з localStorage і заповнення форми =====
+  const lsData = getFromLS(key);
+  if (lsData) {
+    formData.email = lsData.email || '';
+    formData.message = lsData.message || '';
+    form.elements.email.value = formData.email;
+    form.elements.message.value = formData.message;
+  }
+
+  // ===== Обробка введення в поля форми =====
+  form.addEventListener('input', evt => {
+    formData.email = form.elements.email.value;
+    formData.message = form.elements.message.value;
+    saveToLS(key, formData); // Зберігаємо оновлені дані в localStorage
+  });
+
+  // ===== Обробка відправки форми =====
+  form.addEventListener('submit', evt => {
+    evt.preventDefault();
+
+    const email = form.elements.email.value.trim();
+    const message = form.elements.message.value.trim();
+
+    if (!email || !message) {
+      alert('Fill please all fields');
+      return;
     }
-  } catch (error) {
-    console.log('Fill please all fields');
-  }
-});
 
-// ===== Сохраняем данные в локальное хранилище =====
-function saveToLS(key, value) {
-  const jsonData = JSON.stringify(value); // Преобразуем значение в JSON-строку
-  localStorage.setItem(key, jsonData); // Сохраняем по ключу в localStorage
-}
-form.addEventListener('input', evt => {
-  const email = evt.currentTarget.elements.email.value;
-  const message = evt.currentTarget.elements.message.value;
-  formData.email = email;
-  formData.message = message;
-  saveToLS(key, formData); // Сохраняем данные в локальное хранилище
-});
-function getFromLS(key, defaultValue) {
-  const jsonData = localStorage.getItem(key); // Получаем строку из localStorage
+    // Оновлюємо значення formData, не перевизначаючи обʼєкт
+    formData.email = email;
+    formData.message = message;
 
-  try {
-    const data = JSON.parse(jsonData); // Преобразуем обратно в объект
-    return data;
-  } catch {
-    console.log('ERROR PARSING');
-    return defaultValue || jsonData; // Возвращаем значение по умолчанию или «как есть»
-  }
-}
-form.addEventListener('submit', evt => {
-  evt.preventDefault();
+    console.log(formData); // Виводимо в консоль зібрані дані
 
-  const email = form.elements.email.value.trim();
-  const message = form.elements.message.value.trim();
+    localStorage.removeItem(key); // Очищаємо localStorage
+    form.reset(); // Очищаємо форму
 
-  if (!email || !message) {
-    alert('Fill please all fields');
-    return;
+    // Обнуляємо formData вручну
+    formData.email = '';
+    formData.message = '';
+  });
+
+  // ===== Зберігання у localStorage =====
+  function saveToLS(key, value) {
+    try {
+      const jsonData = JSON.stringify(value);
+      localStorage.setItem(key, jsonData);
+    } catch (err) {
+      console.error('Error saving to localStorage:', err);
+    }
   }
 
-  formData = { email, message };
-  console.log(formData);
-
-  localStorage.removeItem(key);
-  form.reset();
-  formData.email = '';
-  formData.message = '';
+  // ===== Отримання з localStorage =====
+  function getFromLS(key, defaultValue = null) {
+    const jsonData = localStorage.getItem(key);
+    if (!jsonData) return defaultValue;
+    try {
+      const data = JSON.parse(jsonData);
+      return data;
+    } catch (err) {
+      console.error('Error parsing from localStorage:', err);
+      return defaultValue;
+    }
+  }
 });
